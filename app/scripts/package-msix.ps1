@@ -2,6 +2,7 @@ param(
     [string]$Configuration = "Release",
     [string]$Runtime = "win-x64",
     [string]$Version = "0.1.0.0",
+    [switch]$Unsigned,
     [switch]$TrustCertificate
 )
 
@@ -100,7 +101,8 @@ $windowsProject = Join-Path $repoRoot "windows\VolunCore.Desktop\VolunCore.Deskt
 $manifestTemplate = Join-Path $repoRoot "windows\VolunCore.Desktop\Package\AppxManifest.xml"
 $msixAssetsDir = Join-Path $repoRoot "windows\VolunCore.Desktop\MsixAssets"
 $desktopAssetsDir = Join-Path $repoRoot "windows\VolunCore.Desktop\Assets"
-$msixPath = Join-Path $outputsRoot "VolunCore_${Version}_x64.msix"
+$packageSuffix = if ($Unsigned) { "unsigned" } else { "signed" }
+$msixPath = Join-Path $outputsRoot "VulanCore_${Version}_x64_${packageSuffix}.msix"
 $certPath = Join-Path $msixRoot "VolunCore-TestCertificate.cer"
 
 New-Item -ItemType Directory -Path $outputsRoot -Force | Out-Null
@@ -141,13 +143,19 @@ if (Test-Path $msixPath) {
 }
 
 $makeAppx = Find-WindowsKitTool -ToolName "makeappx.exe"
-$signtool = Find-WindowsKitTool -ToolName "signtool.exe"
 
 Write-VolunCoreLog "Packing MSIX."
 Invoke-VolunCoreCommand -FilePath $makeAppx -Arguments @("pack", "/d", $packageDir, "/p", $msixPath, "/o")
 
+if ($Unsigned) {
+    Write-VolunCoreLog "Created unsigned package: $msixPath"
+    return
+}
+
+$signtool = Find-WindowsKitTool -ToolName "signtool.exe"
+
 Write-VolunCoreLog "Creating or reusing local signing certificate."
-$publisher = "CN=Frostig Knowledge Transfer"
+$publisher = "CN=8D5E8299-C1EE-4376-8783-93E12C1B1BC"
 $cert = Get-ChildItem Cert:\CurrentUser\My |
     Where-Object { $_.Subject -eq $publisher -and $_.HasPrivateKey } |
     Sort-Object NotAfter -Descending |
