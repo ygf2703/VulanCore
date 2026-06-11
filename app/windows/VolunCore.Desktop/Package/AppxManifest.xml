@@ -6,7 +6,7 @@
   IgnorableNamespaces="uap rescap">
   <Identity
     Name="FrostigKnowledgeTransfer.VulanCore"
-    Publisher="CN=8D5E8299-C1EE-4376-8783-93E12C1B1BC"
+    Publisher="CN=8D5E8299-C1EE-4376-8783-93E12C1B31BC"
     Version="0.1.0.0"
     ProcessorArchitecture="x64" />
   <Properties>

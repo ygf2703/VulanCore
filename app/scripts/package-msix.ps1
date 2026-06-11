@@ -155,7 +155,7 @@ if ($Unsigned) {
 $signtool = Find-WindowsKitTool -ToolName "signtool.exe"
 
 Write-VolunCoreLog "Creating or reusing local signing certificate."
-$publisher = "CN=8D5E8299-C1EE-4376-8783-93E12C1B1BC"
+$publisher = "CN=8D5E8299-C1EE-4376-8783-93E12C1B31BC"
 $cert = Get-ChildItem Cert:\CurrentUser\My |
     Where-Object { $_.Subject -eq $publisher -and $_.HasPrivateKey } |
     Sort-Object NotAfter -Descending |
