@@ -5,12 +5,20 @@ import {
   parseDateValue,
 } from './dates'
 
+export const DEFAULT_EVENT_DURATION_HOURS = 2
+
+export function getEventDurationHours(event) {
+  const duration = Number(event?.durationHours)
+  return Number.isFinite(duration) && duration > 0 ? duration : DEFAULT_EVENT_DURATION_HOURS
+}
+
 export function buildActivityMap(volunteers, events) {
   const activityMap = new Map(
     volunteers.map((volunteer) => [
       volunteer.id,
       {
         totalEvents: 0,
+        totalHours: 0,
         lastParticipationDate: null,
       },
     ]),
@@ -19,12 +27,14 @@ export function buildActivityMap(volunteers, events) {
   events.forEach((event) => {
     const eventDate = parseDateValue(event.date)
     if (!eventDate) return
+    const durationHours = getEventDurationHours(event)
 
     event.participantIds.forEach((volunteerId) => {
       const activity = activityMap.get(volunteerId)
       if (!activity) return
 
       activity.totalEvents += 1
+      activity.totalHours += durationHours
       if (
         !activity.lastParticipationDate ||
         eventDate > parseDateValue(activity.lastParticipationDate)
@@ -53,12 +63,14 @@ export function getInactiveVolunteers(volunteers, events, timeframe) {
     .map((volunteer) => {
       const activity = activityMap.get(volunteer.id) ?? {
         totalEvents: 0,
+        totalHours: 0,
         lastParticipationDate: null,
       }
 
       return {
         ...volunteer,
         totalEvents: activity.totalEvents,
+        totalHours: activity.totalHours,
         lastParticipationDate: activity.lastParticipationDate,
       }
     })
@@ -82,14 +94,17 @@ export function buildDepartmentActivity(data, timeframe) {
     const members = volunteers.filter((volunteer) => volunteer.departmentId === department.id)
     const activeVolunteerIds = new Set()
     let participations = 0
+    let totalHours = 0
 
     windowEvents.forEach((event) => {
+      const durationHours = getEventDurationHours(event)
       event.participantIds.forEach((volunteerId) => {
         const volunteer = volunteerById.get(volunteerId)
         if (volunteer?.departmentId !== department.id) return
 
         activeVolunteerIds.add(volunteerId)
         participations += 1
+        totalHours += durationHours
       })
     })
 
@@ -98,8 +113,39 @@ export function buildDepartmentActivity(data, timeframe) {
       members: members.length,
       activeVolunteers: activeVolunteerIds.size,
       participations,
+      totalHours: Number(totalHours.toFixed(1)),
+      averageHours: activeVolunteerIds.size
+        ? Number((totalHours / activeVolunteerIds.size).toFixed(1))
+        : 0,
     }
   })
+}
+
+export function buildVolunteerLeaderboard(volunteers, events, timeframe) {
+  const windowEvents = getWindowEvents(events, timeframe)
+  const activityMap = buildActivityMap(volunteers, windowEvents)
+
+  return volunteers
+    .map((volunteer) => {
+      const activity = activityMap.get(volunteer.id) ?? {
+        totalEvents: 0,
+        totalHours: 0,
+        lastParticipationDate: null,
+      }
+
+      return {
+        ...volunteer,
+        totalEvents: activity.totalEvents,
+        totalHours: Number(activity.totalHours.toFixed(1)),
+        lastParticipationDate: activity.lastParticipationDate,
+      }
+    })
+    .filter((volunteer) => volunteer.totalEvents > 0)
+    .sort((first, second) => {
+      if (second.totalHours !== first.totalHours) return second.totalHours - first.totalHours
+      if (second.totalEvents !== first.totalEvents) return second.totalEvents - first.totalEvents
+      return String(first.firstName ?? '').localeCompare(String(second.firstName ?? ''))
+    })
 }
 
 export function buildEventTrend(events, timeframe, language) {

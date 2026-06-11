@@ -10,7 +10,12 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+outputs
 *.local
+
+# Windows build/package intermediates
+windows/**/bin
+windows/**/obj
 
 # Editor directories and files
 .vscode/*

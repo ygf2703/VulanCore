@@ -6,6 +6,12 @@ Product ID / in-app offer token:
 vulancore_monthly
 ```
 
+Public Microsoft Store product URL:
+
+```text
+https://apps.microsoft.com/detail/9NNNQ38GS6CC
+```
+
 ## Where The Code Lives
 
 - Native Windows Store API:
@@ -86,6 +92,10 @@ await storeService.PurchaseMonthlySubscriptionAsync();
 ```
 
 That method opens the Microsoft Store purchase dialog for `vulancore_monthly`.
+
+When the React app is running in a regular browser without the Windows WebView2
+bridge, the same upgrade action opens the public Microsoft Store product page
+instead.
 
 ## Locking Premium Features
 

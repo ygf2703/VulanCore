@@ -10,6 +10,7 @@ import { Header } from './components/Header'
 import { InactivityAlerts } from './components/InactivityAlerts'
 import { ManualVolunteerForm } from './components/ManualVolunteerForm'
 import { OrganizationSettings } from './components/OrganizationSettings'
+import { PrivacyPolicy } from './components/PrivacyPolicy'
 import { Sidebar } from './components/Sidebar'
 import { VolunteersTable } from './components/VolunteersTable'
 import { DEFAULT_DATA } from './data/defaultData'
@@ -33,6 +34,10 @@ const VIEW_KEYS = [
   'settings',
 ]
 const DEPARTMENT_ACCENTS = ['#2563eb', '#0f766e', '#0284c7', '#d97706', '#475569']
+
+function getCurrentRoutePath() {
+  return window.location.pathname.replace(/\/+$/, '') || '/'
+}
 
 function dedupeIds(ids) {
   return [...new Set(ids.filter(Boolean))]
@@ -62,18 +67,41 @@ function mergeVolunteerData(existing, incoming) {
   return nextVolunteer
 }
 
+function normalizeEvents(events) {
+  return events.map((event) => ({
+    durationHours: 2,
+    ...event,
+  }))
+}
+
 function App() {
   const { i18n, t } = useTranslation()
   const [data, setData] = useLocalStorage(STORAGE_KEY, DEFAULT_DATA)
   const [activeView, setActiveView] = useState('dashboard')
   const [timeframe, setTimeframe] = useState('quarterly')
+  const [routePath, setRoutePath] = useState(getCurrentRoutePath)
 
-  const isRtl = i18n.language === 'he'
+  const isPrivacyRoute = routePath === '/privacy'
+  const isRtl = isPrivacyRoute || i18n.language === 'he'
 
   useEffect(() => {
-    document.documentElement.lang = i18n.language
+    document.documentElement.lang = isPrivacyRoute ? 'he' : i18n.language
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr'
-  }, [i18n.language, isRtl])
+  }, [i18n.language, isPrivacyRoute, isRtl])
+
+  useEffect(() => {
+    const syncRoute = () => setRoutePath(getCurrentRoutePath())
+    window.addEventListener('popstate', syncRoute)
+    return () => window.removeEventListener('popstate', syncRoute)
+  }, [])
+
+  const navigateTo = useCallback((path) => {
+    const nextPath = path || '/'
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState({}, '', nextPath)
+    }
+    setRoutePath(getCurrentRoutePath())
+  }, [])
 
   const safeData = useMemo(
     () => ({
@@ -81,7 +109,7 @@ function App() {
       settings: data?.settings ?? DEFAULT_DATA.settings,
       departments: data?.departments ?? DEFAULT_DATA.departments,
       volunteers: data?.volunteers ?? DEFAULT_DATA.volunteers,
-      events: data?.events ?? DEFAULT_DATA.events,
+      events: normalizeEvents(data?.events ?? DEFAULT_DATA.events),
       eventRoles: data?.eventRoles ?? DEFAULT_DATA.eventRoles,
     }),
     [data],
@@ -396,6 +424,10 @@ function App() {
 
   const view = VIEW_KEYS.includes(activeView) ? activeView : 'dashboard'
 
+  if (isPrivacyRoute) {
+    return <PrivacyPolicy onBackHome={() => navigateTo('/')} />
+  }
+
   return (
     <div
       className="min-h-screen bg-slate-100 text-slate-950"
@@ -515,6 +547,13 @@ function App() {
               <span className="font-medium text-white">
                 {t('footer.rights', { year: copyrightYear })}
               </span>
+              <button
+                type="button"
+                onClick={() => navigateTo('/privacy')}
+                className="text-slate-300 underline-offset-4 transition hover:text-white hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                מדיניות פרטיות
+              </button>
             </div>
           </footer>
         </div>

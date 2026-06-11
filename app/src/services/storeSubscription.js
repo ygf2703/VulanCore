@@ -1,4 +1,5 @@
 export const MICROSOFT_STORE_SUBSCRIPTION_PRODUCT_ID = 'vulancore_monthly'
+export const MICROSOFT_STORE_PRODUCT_URL = 'https://apps.microsoft.com/detail/9NNNQ38GS6CC'
 
 const REQUEST_TIMEOUT_MS = 120000
 
@@ -85,6 +86,20 @@ export async function checkMonthlySubscription() {
 }
 
 export async function purchaseMonthlySubscription() {
+  if (!hasWindowsStoreBridge()) {
+    globalThis.window?.open?.(MICROSOFT_STORE_PRODUCT_URL, '_blank', 'noopener,noreferrer')
+
+    return {
+      purchaseStatus: 'Store page opened',
+      extendedError: null,
+      subscription: normalizeSubscriptionPayload({
+        isActive: false,
+        productId: MICROSOFT_STORE_SUBSCRIPTION_PRODUCT_ID,
+        unavailable: true,
+      }),
+    }
+  }
+
   const response = await sendStoreMessage('store.purchaseMonthly')
   const subscriptionPayload =
     getField(response.payload, 'subscription', 'Subscription') ?? {}

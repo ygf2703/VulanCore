@@ -1,4 +1,4 @@
-export const DATA_SCHEMA_VERSION = 3
+export const DATA_SCHEMA_VERSION = 4
 
 export const DATA_MODEL = {
   schemaVersion: DATA_SCHEMA_VERSION,
@@ -40,6 +40,7 @@ export const DATA_MODEL = {
       title: 'string',
       titleKey: 'nullable i18n key',
       date: 'ISO date',
+      durationHours: 'number',
       departmentId: 'string',
       managerName: 'string',
       participantIds: ['volunteer id'],

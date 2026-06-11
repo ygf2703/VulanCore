@@ -15,6 +15,7 @@ export function EventCreation({ volunteers, departments, events, onCreateEvent }
   const [form, setForm] = useState({
     title: '',
     date: toIsoDate(new Date()),
+    durationHours: 2,
     departmentId: departments[0]?.id ?? '',
     managerName: '',
     roleText: '',
@@ -84,6 +85,7 @@ export function EventCreation({ volunteers, departments, events, onCreateEvent }
       title: form.title.trim() || t('events.namePlaceholder'),
       titleKey: null,
       date: form.date,
+      durationHours: Math.max(Number(form.durationHours) || 2, 0.25),
       departmentId: form.departmentId,
       managerName: form.managerName.trim(),
       participantIds: selectedIds,
@@ -94,6 +96,7 @@ export function EventCreation({ volunteers, departments, events, onCreateEvent }
     setForm({
       title: '',
       date: toIsoDate(new Date()),
+      durationHours: 2,
       departmentId: departments[0]?.id ?? '',
       managerName: '',
       roleText: '',
@@ -126,13 +129,25 @@ export function EventCreation({ volunteers, departments, events, onCreateEvent }
             />
           </label>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
             <label className="grid gap-1.5 text-sm font-medium text-slate-700">
               {t('events.dateLabel')}
               <input
                 type="date"
                 value={form.date}
                 onChange={(event) => updateForm('date', event.target.value)}
+                className="min-h-11 rounded-md border border-slate-200 bg-slate-50 px-3 text-slate-900 outline-none transition focus:border-blue-300"
+              />
+            </label>
+
+            <label className="grid gap-1.5 text-sm font-medium text-slate-700">
+              {t('events.durationHoursLabel')}
+              <input
+                type="number"
+                min="0.25"
+                step="0.25"
+                value={form.durationHours}
+                onChange={(event) => updateForm('durationHours', event.target.value)}
                 className="min-h-11 rounded-md border border-slate-200 bg-slate-50 px-3 text-slate-900 outline-none transition focus:border-blue-300"
               />
             </label>
@@ -321,6 +336,11 @@ export function EventCreation({ volunteers, departments, events, onCreateEvent }
                 <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600">
                   <span className="rounded-md bg-slate-100 px-2.5 py-1">
                     {t('events.participants', { count: event.participantIds.length })}
+                  </span>
+                  <span className="rounded-md bg-amber-50 px-2.5 py-1 text-amber-800">
+                    {t('events.durationHoursPill', {
+                      count: event.durationHours ?? 2,
+                    })}
                   </span>
                   {event.managerName && (
                     <span className="rounded-md bg-slate-100 px-2.5 py-1">
