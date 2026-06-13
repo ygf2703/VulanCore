@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>מדיניות פרטיות - VulanCore</title>
+  <meta name="description" content="מדיניות הפרטיות של VulanCore לניהול עמותות וצוותי מתנדבים." />
+  <link rel="canonical" href="https://vulancore.netlify.app/privacy" />
+  <style>
+    :root {
+      --bg: #f7fafc;
+      --panel: rgba(255, 255, 255, 0.9);
+      --text: #10233f;
+      --muted: #5f7087;
+      --blue: #0b66d8;
+      --blue-soft: #e7f1ff;
+      --teal-soft: #e8f8f5;
+      --line: #dfe8f3;
+      --shadow: 0 24px 80px rgba(16, 35, 63, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at top right, rgba(11, 102, 216, 0.14), transparent 34%),
+        linear-gradient(135deg, #eef6ff 0%, #f8fafc 46%, #fffbe8 100%);
+      color: var(--text);
+      font-family: Arial, "Assistant", system-ui, sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 32px 18px 42px;
+    }
+
+    .shell {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 10px 16px;
+      border: 1px solid #cfe0f5;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: #0b4f9f;
+      box-shadow: 0 8px 24px rgba(16, 35, 63, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    article {
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 5vw, 48px);
+      backdrop-filter: blur(18px);
+    }
+
+    .badge {
+      display: inline-flex;
+      margin-bottom: 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #0b4f9f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      color: #082f66;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 44px);
+    }
+
+    h2 {
+      margin-top: 34px;
+      font-size: clamp(22px, 4vw, 27px);
+    }
+
+    p {
+      margin: 14px 0 0;
+      color: #304864;
+      font-size: 17px;
+    }
+
+    .updated {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    ul {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 20px;
+      color: #304864;
+      font-size: 17px;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 14px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .contact {
+      margin-top: 34px;
+      border: 1px solid #bfe7df;
+      border-radius: 18px;
+      background: var(--teal-soft);
+      padding: 18px;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding-top: 20px;
+      }
+
+      article {
+        border-radius: 18px;
+      }
+
+      p,
+      li {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="shell">
+      <a class="back" href="/">חזרה לדף הבית</a>
+
+      <article>
+        <header>
+          <span class="badge">שמירה על פרטיות ונתונים</span>
+          <h1>מדיניות פרטיות - VulanCore</h1>
+          <p class="updated">עדכון אחרון: יוני 2026</p>
+          <p>
+            ברוכים הבאים ל-VulanCore (להלן: "האפליקציה" או "השירות"), מערכת לניהול
+            עמותות וצוותי מתנדבים המופעלת על ידי Frostig Knowledge Transfer.
+          </p>
+          <p>
+            הפרטיות שלכם ושל המתנדבים שלכם חשובה לנו מאוד. מסמך זה מפרט בצורה פשוטה
+            ושקופה איזה מידע נשמר במערכת וכיצד נעשה בו שימוש.
+          </p>
+        </header>
+
+        <section>
+          <h2>1. המידע שאנו אוספים והשימוש בו</h2>
+          <p>
+            VulanCore מיועדת לסייע בניהול תפעולי יעיל של עמותות ויוזמות קהילתיות.
+            לצורך כך, המערכת מאפשרת להזין ולנהל את נתוני המידע הבאים:
+          </p>
+          <ul>
+            <li>
+              נתוני מתנדבים: פרטי קשר ומידע רלוונטי לצורך שיוך למשימות, כגון שמות,
+              סטטוס זמינות ופרטים תפעוליים.
+            </li>
+            <li>
+              ניהול פעילות ומשימות: מידע אודות פעילויות הארגון, משימות מתוכננות,
+              סטטוס ביצוע ונתונים המוצגים בדשבורד הניהולי.
+            </li>
+          </ul>
+          <p>
+            כל המידע המוזן למערכת משמש אך ורק לצורך תפעול האפליקציה, הצגת תמונת
+            המצב הניהולית בארגון שלכם ואספקת השירות התקין.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. אי-העברת מידע לצד שלישי</h2>
+          <p>אנו מחויבים לשמירה קפדנית על סודיות המידע שלכם:</p>
+          <ul>
+            <li>
+              שום פרט מידע, כולל רשימות מתנדבים, משימות או נתוני פעילות, אינו נמכר,
+              מושכר, משותף או מועבר לגורמים חיצוניים או לצדדים שלישיים כלשהם למטרות
+              שיווק, פרסום או כל מטרה אחרת.
+            </li>
+            <li>
+              המידע נגיש אך ורק עבורכם ועבור הארגון שלכם לצורך הפעילות השוטפת.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>3. אבטחת מידע</h2>
+          <p>
+            אנו מפעילים אמצעי אבטחה מקובלים וסטנדרטיים כדי להגן על המידע השמור
+            במערכת מפני גישה בלתי מורשית, שינוי, חשיפה או הרס.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. שינויים במדיניות הפרטיות</h2>
+          <p>
+            אנו שומרים לעצמנו את הזכות לעדכן את מדיניות הפרטיות מעת לעת. במידה
+            ויבוצעו שינויים מהותיים, נעדכן על כך בעמוד זה או בתוך ממשק האפליקציה.
+          </p>
+        </section>
+
+        <section class="contact">
+          <h2>5. יצירת קשר</h2>
+          <p>
+            לכל שאלה, הבהרה או בקשה בנוגע למדיניות הפרטיות והגנה על הנתונים שלכם,
+            ניתן לפנות אלינו באמצעות אתר האינטרנט הרשמי:
+            <a href="https://vulancore.netlify.app">vulancore.netlify.app</a>.
+          </p>
+        </section>
+      </article>
+
+      <p class="footer-note">© 2026 Frostig Knowledge Transfer. All rights reserved.</p>
+    </div>
+  </main>
+</body>
+</html>
